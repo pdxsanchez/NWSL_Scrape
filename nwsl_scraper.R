@@ -15,3 +15,4 @@ u <- "https://fbref.com/en/comps/182/schedule/NWSL-Scores-and-Fixtures"
 ## Read in the webpage, pop it into a table
 xData <- getURL(u)
 table = readHTMLTable(xData, stringsAsFactors=F)
+t <- as_tibble(table)
