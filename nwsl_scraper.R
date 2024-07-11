@@ -51,8 +51,8 @@ v24 <- t24 %>% filter(!(Home=="")) %>%
                mutate_at(vars(xG...6,xG...8), as.numeric)  %>%
                mutate_at(vars(Attendance), parse_number)    %>%
                rename("home_xG" = "xG...6","away_xG" = "xG...8",
-                      "home" = "Home", "away" = "Away") %>%
-               mutate("home_goals" = str_extract(Score, "^[^-]*"))
+                      "home" = "Home", "away" = "Away") #%>%
+              # mutate("home_goals" = str_extract(Score, "^[^-]*"))
 
 #w23 <- v23 %>% mutate_at(vars(xG...7,xG...9), as.numeric)     # chr->num convert xG
 
