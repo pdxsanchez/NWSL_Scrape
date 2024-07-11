@@ -41,14 +41,20 @@ t23 <- as_tibble(t23a,.name_repair = "unique") #convert df to tibble
 
 #Remove blank rows. Assumes no blank "Home" teams in data file. So... If "Home"
 #column is blank, assume row is blank, and delete it.
-v23 <- t23 %>% filter(!(Home==""))
+v23 <- t23 %>% filter(!(Home=="")) %>%
+                mutate_at(vars(xG...7,xG...9), as.numeric)  %>%
+                mutate_at(vars(Attendance), parse_number)    %>%
+                rename("home_xG" = "xG...7","away_xG" = "xG...9",
+                       "home" = "Home", "away" = "Away")
+                
 v24 <- t24 %>% filter(!(Home=="")) %>%
                mutate_at(vars(xG...6,xG...8), as.numeric)  %>%
                mutate_at(vars(Attendance), parse_number)    %>%
                rename("home_xG" = "xG...6","away_xG" = "xG...8",
-                      "home" = "Home", "away" = "Away")
+                      "home" = "Home", "away" = "Away") %>%
+               mutate("home_goals" = str_extract(Score, "^[^-]*"))
 
-w23 <- v23 %>% mutate_at(vars(xG...7,xG...9), as.numeric)     # chr->num convert xG
+#w23 <- v23 %>% mutate_at(vars(xG...7,xG...9), as.numeric)     # chr->num convert xG
 
 
 
