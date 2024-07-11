@@ -39,6 +39,9 @@ table23 = readHTMLTable(xData23, stringsAsFactors=F)
 t23a <- table23[[1]]  #Read in the first dataframe in the list of dataframes
 t23 <- as_tibble(t23a,.name_repair = "unique")
 
-#Remove blank rows. Assumes no blank "Home" teams in data file.
+#Remove blank rows. Assumes no blank "Home" teams in data file. So... If "Home"
+#column is blank, assume row is blank, and delete it.
 v23 <- t23 %>% filter(!(Home==""))
 v24 <- t24 %>% filter(!(Home==""))
+
+
