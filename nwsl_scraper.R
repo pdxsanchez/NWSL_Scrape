@@ -1,7 +1,7 @@
 library(usethis)
 library(janitor)
 ####
-library(tidyverse) #filter(); select(); 
+library(tidyverse) #filter(); select(); readr();
 library(readxl)    #read_excel()
 library(ggplot2)
 library(lubridate) 
@@ -13,7 +13,7 @@ library(RCurl) #webscraping
 u24 <-"https://fbref.com/en/comps/182/schedule/NWSL-Scores-and-Fixtures"
 u23 <-"https://fbref.com/en/comps/182/2023/schedule/2023-NWSL-Scores-and-Fixtures"
 
-## Read in NWSL Sched and fixtures webpages and format into tibbles.
+## Read in NWSL Sched and fixtures webpages and format into tibbles.        
 ## GetURL/ReadHTML performed on 2023 data produces a list of 3 dataframes: 
 ## (1) "sched_all" which we assume is all NWSL weeks including playoffs
 ## (2) "sched_2023_182_1" which we assume is non-playoff weeks
@@ -32,16 +32,23 @@ u23 <-"https://fbref.com/en/comps/182/2023/schedule/2023-NWSL-Scores-and-Fixture
 xData24 <- getURL(u24) #2024 NWSL schedule and scores data
 table24 = readHTMLTable(xData24, stringsAsFactors=F)
 t24a <- table24[[1]]   #Read in the first dataframe in the list of dataframes
-t24 <- as_tibble(t24a,.name_repair = "unique")
+t24 <- as_tibble(t24a,.name_repair = "unique") #convert df to tibble
 
 xData23 <- getURL(u23) #2023 NWSL schedule and scores data
 table23 = readHTMLTable(xData23, stringsAsFactors=F)
 t23a <- table23[[1]]  #Read in the first dataframe in the list of dataframes
-t23 <- as_tibble(t23a,.name_repair = "unique")
+t23 <- as_tibble(t23a,.name_repair = "unique") #convert df to tibble
 
 #Remove blank rows. Assumes no blank "Home" teams in data file. So... If "Home"
 #column is blank, assume row is blank, and delete it.
 v23 <- t23 %>% filter(!(Home==""))
-v24 <- t24 %>% filter(!(Home==""))
+v24 <- t24 %>% filter(!(Home=="")) %>%
+               mutate_at(vars(xG...6,xG...8), as.numeric)  %>%
+               mutate_at(vars(Attendance), parse_number)    %>%
+               rename("home_xG" = "xG...6","away_xG" = "xG...8",
+                      "home" = "Home", "away" = "Away")
+
+w23 <- v23 %>% mutate_at(vars(xG...7,xG...9), as.numeric)     # chr->num convert xG
+
 
 
