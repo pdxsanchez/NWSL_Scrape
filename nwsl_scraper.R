@@ -54,7 +54,8 @@ v24 <- t24 %>% filter(!(Home=="")) %>%
                       "home" = "Home", "away" = "Away") %>%
                mutate("home_goals" = str_extract(Score,"[0123456789]")) %>%
                mutate("away_goals" = str_extract(Score,"[^-][0123456789]")) %>%
-               mutate_at(vars(away_goals),parse_number)
+               mutate_at(vars(away_goals),parse_number) %>%
+               mutate("game_played"= ifelse(is.na(home_xG),0,1)) 
             #  mutate_at(vars(home_goals), str_split("-"))
 
 #w23 <- v23 %>% mutate_at(vars(xG...7,xG...9), as.numeric)     # chr->num convert xG
