@@ -69,6 +69,7 @@ test <- v24 %>%  summarise(
                      tot_away_goals   = sum(away_goals, na.rm = TRUE),
                      tot_game_goals   = sum(home_goals + away_goals, na.rm = TRUE),
                      tot_btts_yes     = sum(btts_yes, na.rm = TRUE),
+                     median_gpg       = median(home_goals+away_goals)
                      
                  ) %>%
                  mutate("btts_yes_%" = tot_btts_yes/tot_games_played) %>%
