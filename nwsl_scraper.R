@@ -53,12 +53,22 @@ v24 <- t24 %>% filter(!(Home=="")) %>%
                rename("home_xG" = "xG...6","away_xG" = "xG...8",
                       "home" = "Home", "away" = "Away") %>%
                mutate("home_goals" = str_extract(Score,"[0123456789]")) %>%
+               mutate_at(vars(home_goals),parse_number) %>%
                mutate("away_goals" = str_extract(Score,"[^-][0123456789]")) %>%
                mutate_at(vars(away_goals),parse_number) %>%
-               mutate("game_played"= ifelse(is.na(home_xG),0,1)) 
-            #  mutate_at(vars(home_goals), str_split("-"))
+               mutate("game_played"= ifelse(is.na(home_xG),0,1)) %>%
+               mutate("btts_yes" = ifelse(game_played==0,NA,
+                                             ifelse((away_goals!=0 & home_goals != 0),T,F)) )
 
-#w23 <- v23 %>% mutate_at(vars(xG...7,xG...9), as.numeric)     # chr->num convert xG
-
+##
+## Ok lets have some fun cutting up the data...
+##
+test <- v24 %>%  summarise(
+                     tot_games_played = sum(game_played, na.rm = TRUE),
+                     tot_home_goals   = sum(home_goals, na.rm = TRUE),
+                     tot_btts_yes     = sum(btts_yes, na.rm = TRUE),
+                     
+                 ) %>%
+                 mutate("btts_yes_%" = tot_btts_yes/tot_games_played)
 
 
