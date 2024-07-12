@@ -81,7 +81,10 @@ test <- v24 %>%  summarise(
                      tot_away_goals   = sum(away_goals, na.rm = TRUE),
                      tot_game_goals   = sum(home_goals + away_goals, na.rm = TRUE),
                      tot_btts_yes     = sum(btts_yes, na.rm = TRUE),
+                     mean_goals       = mean(game_score, na.rm= TRUE),
+                     sd_goals         = sd(game_score,na.rm=TRUE),
                      median_gpg       = median(home_goals+away_goals, na.rm=TRUE),
+                     median2_gpg      = median(game_score, na.rm=TRUE),
                      tot_u_0_5        = sum(u_0_5, na.rm = TRUE),
                      tot_o_0_5        = sum(o_0_5, na.rm = TRUE),
                      tot_u_1_5        = sum(u_1_5, na.rm = TRUE),
@@ -98,8 +101,15 @@ test <- v24 %>%  summarise(
                  mutate("mean_gpg"   = tot_game_goals/tot_games_played  ) %>%
                  mutate("btts_yes_%" = tot_btts_yes/tot_games_played) %>%
                  mutate("u_0_5%" = tot_u_0_5/tot_games_played) %>%
-                 mutate("o_0_5%" = tot_o_0_5/tot_games_played) 
-  
+                 mutate("o_0_5%" = tot_o_0_5/tot_games_played) %>% 
+                 mutate("u_1_5%" = tot_u_1_5/tot_games_played) %>%
+                 mutate("o_1_5%" = tot_o_1_5/tot_games_played) %>%
+                 mutate("u_2_5%" = tot_u_2_5/tot_games_played) %>%
+                 mutate("o_2_5%" = tot_o_2_5/tot_games_played) %>%
+                 mutate("u_3_5%" = tot_u_3_5/tot_games_played) %>%
+                 mutate("o_3_5%" = tot_o_3_5/tot_games_played) %>%
+                 mutate("u_4_5%" = tot_u_4_5/tot_games_played) %>%
+                 mutate("o_4_5%" = tot_o_4_5/tot_games_played) 
                         
 
 
