@@ -66,9 +66,13 @@ v24 <- t24 %>% filter(!(Home=="")) %>%
 test <- v24 %>%  summarise(
                      tot_games_played = sum(game_played, na.rm = TRUE),
                      tot_home_goals   = sum(home_goals, na.rm = TRUE),
+                     tot_away_goals   = sum(away_goals, na.rm = TRUE),
+                     tot_game_goals   = sum(home_goals + away_goals, na.rm = TRUE),
                      tot_btts_yes     = sum(btts_yes, na.rm = TRUE),
                      
                  ) %>%
-                 mutate("btts_yes_%" = tot_btts_yes/tot_games_played)
+                 mutate("btts_yes_%" = tot_btts_yes/tot_games_played) %>%
+                 mutate("mean_gpg"   = tot_game_goals/tot_games_played  )
+                        
 
 
