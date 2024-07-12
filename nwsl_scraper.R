@@ -58,22 +58,48 @@ v24 <- t24 %>% filter(!(Home=="")) %>%
                mutate_at(vars(away_goals),parse_number) %>%
                mutate("game_played"= ifelse(is.na(home_xG),0,1)) %>%
                mutate("btts_yes" = ifelse(game_played==0,NA,
-                                             ifelse((away_goals!=0 & home_goals != 0),T,F)) )
+                                             ifelse((away_goals!=0 & home_goals != 0),T,F)) ) %>%
+               mutate("game_score" = away_goals + home_goals) %>%
+               mutate("u_0_5" = ifelse((game_score < 0.5),T,F)) %>%
+               mutate("o_0_5" = ifelse((game_score > 0.5),T,F)) %>%
+               mutate("u_1_5" = ifelse((game_score < 1.5),T,F)) %>%
+               mutate("o_1_5" = ifelse((game_score > 1.5),T,F)) %>%
+               mutate("u_2_5" = ifelse((game_score < 2.5),T,F)) %>%
+               mutate("o_2_5" = ifelse((game_score > 2.5),T,F)) %>%
+               mutate("u_3_5" = ifelse((game_score < 3.5),T,F)) %>%
+               mutate("o_3_5" = ifelse((game_score > 3.5),T,F)) %>%
+               mutate("u_4_5" = ifelse((game_score < 4.5),T,F)) %>%
+               mutate("o_4_5" = ifelse((game_score > 4.5),T,F)) 
 
 ##
 ## Ok lets have some fun cutting up the data...
 ##
 test <- v24 %>%  summarise(
                      tot_games_played = sum(game_played, na.rm = TRUE),
+                     tot_goals        = sum(game_score, na.rm = TRUE),
                      tot_home_goals   = sum(home_goals, na.rm = TRUE),
                      tot_away_goals   = sum(away_goals, na.rm = TRUE),
                      tot_game_goals   = sum(home_goals + away_goals, na.rm = TRUE),
                      tot_btts_yes     = sum(btts_yes, na.rm = TRUE),
-                     median_gpg       = median(home_goals+away_goals)
+                     median_gpg       = median(home_goals+away_goals, na.rm=TRUE),
+                     tot_u_0_5        = sum(u_0_5, na.rm = TRUE),
+                     tot_o_0_5        = sum(o_0_5, na.rm = TRUE),
+                     tot_u_1_5        = sum(u_1_5, na.rm = TRUE),
+                     tot_o_1_5        = sum(o_1_5, na.rm = TRUE),
+                     tot_u_2_5        = sum(u_2_5, na.rm = TRUE),
+                     tot_o_2_5        = sum(o_2_5, na.rm = TRUE),
+                     tot_u_3_5        = sum(u_3_5, na.rm = TRUE),
+                     tot_o_3_5        = sum(o_3_5, na.rm = TRUE),
+                     tot_u_4_5        = sum(u_4_5, na.rm = TRUE),
+                     tot_o_4_5        = sum(o_4_5, na.rm = TRUE)
+                    
                      
                  ) %>%
+                 mutate("mean_gpg"   = tot_game_goals/tot_games_played  ) %>%
                  mutate("btts_yes_%" = tot_btts_yes/tot_games_played) %>%
-                 mutate("mean_gpg"   = tot_game_goals/tot_games_played  )
+                 mutate("u_0_5%" = tot_u_0_5/tot_games_played) %>%
+                 mutate("o_0_5%" = tot_o_0_5/tot_games_played) 
+  
                         
 
 
