@@ -83,7 +83,7 @@ test <- v24 %>%  summarise(
                      tot_btts_yes     = sum(btts_yes, na.rm = TRUE),
                      mean_goals       = mean(game_score, na.rm= TRUE),
                      sd_goals         = sd(game_score,na.rm=TRUE),
-                     median_gpg       = median(home_goals+away_goals, na.rm=TRUE),
+                     #median_gpg       = median(home_goals+away_goals, na.rm=TRUE),
                      median2_gpg      = median(game_score, na.rm=TRUE),
                      tot_u_0_5        = sum(u_0_5, na.rm = TRUE),
                      tot_o_0_5        = sum(o_0_5, na.rm = TRUE),
@@ -111,5 +111,20 @@ test <- v24 %>%  summarise(
                  mutate("u_4_5%" = tot_u_4_5/tot_games_played) %>%
                  mutate("o_4_5%" = tot_o_4_5/tot_games_played) 
                         
+w24 <- test %>%    mutate("avg_goals" = mean_goals)%>%
+                   mutate("std_dev_goals" = sd_goals) %>%
+                   mutate("btts_yes_odds" = 1/(tot_btts_yes/tot_games_played)) %>%
+                   mutate("btts_no_odds" = 1/(1- `btts_yes_%`)) %>%
+                   mutate("u_0_5_odds" = 1/(tot_u_0_5/tot_games_played)) %>%
+                   mutate("o_0_5_odds" = 1/(tot_o_0_5/tot_games_played)) %>% 
+                   mutate("u_1_5_odds" = 1/(tot_u_1_5/tot_games_played)) %>%
+                   mutate("o_1_5_odds" = 1/(tot_o_1_5/tot_games_played)) %>%
+  mutate("u_2_5_odds" = 1/(tot_u_2_5/tot_games_played)) %>%
+  mutate("o_2_5_odds" = 1/(tot_o_2_5/tot_games_played)) %>%
+  mutate("u_3_5_odds" = 1/(tot_u_3_5/tot_games_played)) %>%
+  mutate("o_3_5_odds" = 1/(tot_o_3_5/tot_games_played)) %>%
+  mutate("u_4_5_odds" = 1/(tot_u_4_5/tot_games_played)) %>%
+  mutate("o_4_5_odds" = 1/(tot_o_4_5/tot_games_played)) 
 
+w27 <- w24 %>%  mutate(across(where(is.numeric), ~round(.x, digits=3)))
 
